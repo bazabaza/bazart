@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://yastatic.net/jquery/1.8.3/jquery.js"></script>
+    <script>
+        $(document).ready(function() {
+            jQuery.fn.center = function () {
+                this.css("position", "relative");
+                this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+                $(window).scrollTop()) + "px");
+                this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+                $(window).scrollLeft()) + "px");
+
+                return this;
+            };
+
+            resize_canvas({x: 1.5, y: 1});
+            draw();
+        });
+
+        function other_scale(scale) {
+            if (scale == 'x') {
+                return 'y';
+            }
+            return 'x';
+        }
+
+        function get_brace_scale(ratio) {
+            if ($(window).width() / ratio.x > $(window).height() / ratio.y) {
+                return 'x';
+            }
+            return 'y';
+        }
+
+        function resize_canvas(ratio) {
+            if (($(window).width() / ratio.x < $(window).height() / ratio.y)) {
+                $("#art-object").width($(window).width() * 0.9);
+                $("#art-object").height($("#art-object").width() * (ratio['y'] / ratio['x']));
+            } else {
+                $("#art-object").height($(window).height() * 0.9);
+                $("#art-object").width($("#art-object").height() * (ratio['x'] / ratio['y']));
+            }
+
+            $('#art-object').center();
+            //$("#art-object").height(500);
+            //$("#art-object").width(500);
+
+        }
+
+        function draw() {
+            var ctx = document.getElementById('art-object').getContext('2d');
+
+            // refresh canvas scale
+            ctx.canvas.width  = $("#art-object").width();
+            ctx.canvas.height = $("#art-object").height();
+            ctx.font = $("#art-object").height() + "px monospace";
+            ctx.fillText("$Z", 50, $("#art-object").height() * 0.8);
+
+
+//            for (var i=0;i<6;i++){
+//                for (var j=0;j<6;j++){
+//                    ctx.fillStyle = 'rgb(' + Math.floor(255-42.5*i) + ',' +
+//                        Math.floor(255-42.5*j) + ',0)';
+//                    ctx.fillRect(j*25,i*25,25,25);
+//                }
+//            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            height: 100%;
+            margin: 0px;
+        }
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+
+<body>
+<canvas id="art-object"></canvas>
+</body>
+
+</html>
