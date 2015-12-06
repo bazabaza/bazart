@@ -16,8 +16,9 @@
                 return this;
             };
 
-            resize_canvas({x: 1.5, y: 1});
-            draw();
+            var ratio = {x: 34, y: 22};
+            var ctx = init_canvas(ratio, true);
+            draw(ctx, ratio);
         });
 
         function other_scale(scale) {
@@ -34,7 +35,7 @@
             return 'y';
         }
 
-        function resize_canvas(ratio) {
+        function init_canvas(ratio, debug) {
             if (($(window).width() / ratio.x < $(window).height() / ratio.y)) {
                 $("#art-object").width($(window).width() * 0.9);
                 $("#art-object").height($("#art-object").width() * (ratio['y'] / ratio['x']));
@@ -44,19 +45,87 @@
             }
 
             $('#art-object').center();
-            //$("#art-object").height(500);
-            //$("#art-object").width(500);
+            // refresh canvas scale
+            var w = $("#art-object").width(),
+                h = $("#art-object").height();
+
+            var ctx = document.getElementById('art-object').getContext('2d');
+            ctx.canvas.width  = w;
+            ctx.canvas.height = h;
+
+            // h = 1, 13, 4; w = 7, 10, 9
+            if (debug) {
+                var i;
+                // vertical ruler
+                for (i=1; i<ratio.x; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(i * w / ratio.x, 0);
+                    ctx.lineTo(i * w / ratio.x, h);
+                    ctx.stroke();
+                }
+
+                // horizontal
+                for (i=1; i<ratio.y; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, i * h / ratio.y);
+                    ctx.lineTo(w, i * h / ratio.y);
+                    ctx.stroke();
+                }
+
+            }
+            return ctx;
 
         }
 
-        function draw() {
-            var ctx = document.getElementById('art-object').getContext('2d');
+        function cursor(ctx, ratio) {
+            var o = {};
+            var point_time = 0.2;
+            var dash_time = point_time * 3;
+            var between_chars_time = point_time * 3;
+            var signal = [
+                point_time, point_time, point_time, between_chars_time,
+                dash_time, point_time, dash_time, point_time, dash_time, between_chars_time,
+                point_time, point_time, point_time];
+            var curr_signal_pos = 0;
+            var curr_color = 'rgb(0,0,0)';
+            var w = $("#art-object").width(),
+                h = $("#art-object").height();
 
-            // refresh canvas scale
-            ctx.canvas.width  = $("#art-object").width();
-            ctx.canvas.height = $("#art-object").height();
-            ctx.font = $("#art-object").height() + "px monospace";
-            ctx.fillText("$Z", 50, $("#art-object").height() * 0.8);
+
+            o.draw = function(self) {
+                if (self == undefined) {
+                    self = this;
+                }
+
+                ctx.fillStyle = curr_color;
+                ctx.fillRect((ratio.x - 13) * w / ratio.x, 2 * h / ratio.y, 9 * w / ratio.x, 18 * h / ratio.y);
+                setTimeout(this.draw, signal[curr_signal_pos]);
+                curr_signal_pos++;
+                if (curr_signal_pos >= signal.length) {
+                    curr_signal_pos = 0;
+                }
+                if (curr_color = 'rgb(0,0,0)') {
+                    curr_color = 'rgb(255,255,255)';
+                }
+            };
+
+            return o;
+        }
+
+        function draw(ctx, ratio) {
+            var w = $("#art-object").width(),
+                h = $("#art-object").height();
+
+            //ctx.scale(1, 1);
+
+            ctx.font = h * 0.83 + "px monospace";
+            ctx.fillText("$", 1.8 * w / ratio.x, (ratio.y - 4.2) * h / ratio.y);
+
+            var c = cursor(ctx, ratio);
+            c.draw();
+
+            //ctx.fillStyle = 'rgb(255,255,255)';
+            //ctx.fillRect((ratio.x - 13) * w / ratio.x, 2 * h / ratio.y, 9 * w / ratio.x, 18 * h / ratio.y);
 
 
 //            for (var i=0;i<6;i++){
