@@ -17,7 +17,8 @@
             };
 
             var ratio = {x: 34, y: 22};
-            var ctx = init_canvas(ratio, true);
+            var ctx = init_canvas(ratio, false);
+
             draw(ctx, ratio);
         });
 
@@ -36,18 +37,20 @@
         }
 
         function init_canvas(ratio, debug) {
+            var art_obj = $("#art-object");
+
             if (($(window).width() / ratio.x < $(window).height() / ratio.y)) {
-                $("#art-object").width($(window).width() * 0.9);
-                $("#art-object").height($("#art-object").width() * (ratio['y'] / ratio['x']));
+                art_obj.width($(window).width() * 0.9);
+                art_obj.height(art_obj.width() * (ratio['y'] / ratio['x']));
             } else {
-                $("#art-object").height($(window).height() * 0.9);
-                $("#art-object").width($("#art-object").height() * (ratio['x'] / ratio['y']));
+                art_obj.height($(window).height() * 0.9);
+                art_obj.width(art_obj.height() * (ratio['x'] / ratio['y']));
             }
 
-            $('#art-object').center();
+            art_obj.center();
             // refresh canvas scale
-            var w = $("#art-object").width(),
-                h = $("#art-object").height();
+            var w = art_obj.width(),
+                h = art_obj.height();
 
             var ctx = document.getElementById('art-object').getContext('2d');
             ctx.canvas.width  = w;
@@ -57,7 +60,7 @@
             if (debug) {
                 var i;
                 // vertical ruler
-                for (i=1; i<ratio.x; i++) {
+                for (i=0; i<=ratio.x; i++) {
                     ctx.beginPath();
                     ctx.moveTo(i * w / ratio.x, 0);
                     ctx.lineTo(i * w / ratio.x, h);
@@ -65,7 +68,7 @@
                 }
 
                 // horizontal
-                for (i=1; i<ratio.y; i++) {
+                for (i=0; i<=ratio.y; i++) {
                     ctx.beginPath();
                     ctx.moveTo(0, i * h / ratio.y);
                     ctx.lineTo(w, i * h / ratio.y);
@@ -78,43 +81,82 @@
         }
 
         function cursor(ctx, ratio) {
-            var o = {};
-            var point_time = 0.2;
+            var art_obj = $("#art-object");
+
+            var point_time = 500;
             var dash_time = point_time * 3;
             var between_chars_time = point_time * 3;
-            var signal = [
-                point_time, point_time, point_time, between_chars_time,
-                dash_time, point_time, dash_time, point_time, dash_time, between_chars_time,
-                point_time, point_time, point_time];
-            var curr_signal_pos = 0;
-            var curr_color = 'rgb(0,0,0)';
-            var w = $("#art-object").width(),
-                h = $("#art-object").height();
+            var between_points_or_dashes_time = point_time;
+            var between_signals_time = 3000;
+//            var signal = [
+//                point_time, between_points_or_dashes_time, point_time, between_points_or_dashes_time, point_time, between_chars_time,
+//                dash_time, between_points_or_dashes_time, dash_time, between_points_or_dashes_time, dash_time, between_chars_time,
+//                point_time, between_points_or_dashes_time, point_time, between_points_or_dashes_time, point_time,
+//                between_signals_time];
+//            var curr_signal_pos = 0;
+//            var curr_color = 'rgb(0,0,0)';
+//            var w = art_obj.width(),
+//                h = art_obj.height();
+
+            var o = {
+                ratio: ratio,
+                point_time: point_time,
+                dash_time: point_time * 3,
+                between_chars_time: point_time * 3,
+                signal: [
+                    point_time, between_points_or_dashes_time, point_time, between_points_or_dashes_time, point_time, between_chars_time,
+                    dash_time, between_points_or_dashes_time, dash_time, between_points_or_dashes_time, dash_time, between_chars_time,
+                    point_time, between_points_or_dashes_time, point_time, between_points_or_dashes_time, point_time,
+                    between_signals_time],
+                curr_signal_pos: 0,
+                curr_color: 'rgb(0,0,0)',
+                w: art_obj.width(),
+                h: art_obj.height()
+            };
 
 
             o.draw = function(self) {
+                var enlarger;
+                //var ctx = document.getElementById('art-object').getContext('2d');
+
                 if (self == undefined) {
                     self = this;
                 }
 
-                ctx.fillStyle = curr_color;
-                ctx.fillRect((ratio.x - 13) * w / ratio.x, 2 * h / ratio.y, 9 * w / ratio.x, 18 * h / ratio.y);
-                setTimeout(this.draw, signal[curr_signal_pos]);
-                curr_signal_pos++;
-                if (curr_signal_pos >= signal.length) {
-                    curr_signal_pos = 0;
+                //console.log('sig pos: ' + self.curr_signal_pos);
+                //console.log(self.curr_color + ' - ' + self.signal[self.curr_signal_pos]);
+                ctx.fillStyle = self.curr_color;
+                if (self.curr_color == 'rgb(255,255,255)') {
+                    enlarger = 10;
+                } else {
+                    enlarger = 0;
                 }
-                if (curr_color = 'rgb(0,0,0)') {
-                    curr_color = 'rgb(255,255,255)';
+                ctx.fillRect(
+                        ((self.ratio.x - 13) * self.w / self.ratio.x) - enlarger,
+                        (2 * self.h / self.ratio.y) - enlarger,
+                        (9 * self.w / self.ratio.x) + enlarger * 2,
+                        (18 * self.h / self.ratio.y) + enlarger * 2);
+
+                if (self.curr_signal_pos >= self.signal.length) {
+                    self.curr_signal_pos = 0;
                 }
+                if (self.curr_color == 'rgb(0,0,0)') {
+                    self.curr_color = 'rgb(255,255,255)';
+                } else {
+                    self.curr_color = 'rgb(0,0,0)';
+                }
+                setTimeout(self.draw, self.signal[self.curr_signal_pos], self);
+                self.curr_signal_pos++;
             };
 
             return o;
         }
 
         function draw(ctx, ratio) {
-            var w = $("#art-object").width(),
-                h = $("#art-object").height();
+            var art_obj = $("#art-object");
+
+            var w = art_obj.width(),
+                h = art_obj.height();
 
             //ctx.scale(1, 1);
 
@@ -125,7 +167,7 @@
             c.draw();
 
             //ctx.fillStyle = 'rgb(255,255,255)';
-            //ctx.fillRect((ratio.x - 13) * w / ratio.x, 2 * h / ratio.y, 9 * w / ratio.x, 18 * h / ratio.y);
+            //ctx.fillRect(10, 10, 50, 50);
 
 
 //            for (var i=0;i<6;i++){
@@ -142,7 +184,7 @@
             height: 100%;
             margin: 0px;
         }
-        canvas { border: 1px solid black; }
+        canvas { border: 0px solid black; }
     </style>
 </head>
 
