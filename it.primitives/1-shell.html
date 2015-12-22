@@ -8,12 +8,7 @@
     <script>
         $(document).ready(function() {
             var ratio = {x: 34, y: 22};
-            BAZART.init(ratio, true);
-
-//            $(window).resize(function() {
-//                draw$();
-//
-//            });
+            BAZART.init(ratio, false);
 
             draw();
         });
@@ -97,7 +92,7 @@
             height: 100%;
             margin: 0px;
         }
-        canvas { border: 0px solid black; }
+        canvas { border: 0px; }
     </style>
 </head>
 
