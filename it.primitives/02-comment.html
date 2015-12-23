@@ -4,21 +4,52 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="https://yastatic.net/jquery/1.8.3/jquery.js"></script>
-    <script src="../js/bazart-0.1.js"></script>
     <script src="https://raw.githubusercontent.com/bazabaza/bazart/master/js/bazart-0.1.js"></script>
+    <script src="../js/bazart-0.1.js"></script>
     <script>
         $(document).ready(function() {
             var ratio = {x: 160, y: 100};
-            BAZART.init(ratio, true);
+            BAZART.init(ratio, false);
 
             draw();
         });
 
+
+        function drawTextFieldBorder(ctx, p, w, h) {
+            ctx.strokeRect(p * 10.5, p * 10.5, w - p * 10.5 * 2, h - p * 10.5 * 2);
+        }
+
+
+        function drawCursor(ctx, p) {
+            ctx.moveTo(p * 20.5, p * 19);
+            ctx.lineTo(p * 20.5, p * (19 + 18));
+
+            ctx.moveTo(p * 20.5, p * (19 + 13));
+            ctx.lineTo(p * 25.5, p * (19 + 13));
+            ctx.stroke();
+
+            setTimeout(hideCursor, 530, ctx, p);
+        }
+
+
+        function hideCursor(ctx, p) {
+            ctx.save();
+            ctx.fillStyle = 'rgb(255,255,255)';
+            ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
+            ctx.restore();
+
+            setTimeout(drawCursor, 530, ctx, p);
+        }
+
         function draw() {
             var w = BAZART.artObject.width(),
-                h = BAZART.artObject.height();
+                h = BAZART.artObject.height(),
+                p = BAZART.canvas.pixelSize,
+                ctx = BAZART.ctx;
 
-            BAZART.ctx.fillRect(10, 10, 100, 100);
+            ctx.lineWidth = p;
+            drawTextFieldBorder(ctx, p, w, h);
+            drawCursor(ctx, p);
         }
     </script>
     <style type="text/css">
