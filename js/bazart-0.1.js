@@ -61,12 +61,14 @@ BAZART = (function($) {
 
     m.init = function(canvasRatio, debug) {
         this.canvas.ratio = canvasRatio;
+
         this.debug = debug == undefined ? false : debug;
         this.artObject = $("#art-object");
         this.ctx = document.getElementById('art-object').getContext('2d');
 
         this._patchJQuery();
         this._initCanvas();
+        this.canvas.pixelSize = this.artObject.width() / this.canvas.ratio.x;
 
         $(window).resize(function() {
             if (window.RT) clearTimeout(window.RT);
