@@ -30,8 +30,9 @@
             ctx.save();
             ctx.fillStyle = 'rgb(255,255,255)';
             ctx.font = 8 * p + "px monospace";
-            var randX = 2 + Math.random() * 90 * p,
-                randY = 10 + Math.random() * 88 * p;
+            var randX = 2 * p + Math.random() * 82 * p,
+                randY = 8 * p + Math.random() * 90 * p;
+
             ctx.fillText("хуй", randX, randY);
 
             ctx.restore();
@@ -44,8 +45,9 @@
             ctx.save();
             ctx.fillStyle = 'rgb(255,255,255)';
             ctx.font = 8 * p + "px monospace";
-            var randX = 2 + Math.random() * 82 * p,
-                randY = 10 + Math.random() * 88 * p;
+            var randX = 2 * p + Math.random() * 73 * p,
+                randY = 8 * p + Math.random() * 90 * p;
+
             ctx.fillText("пизда", randX, randY);
 
             ctx.restore();
@@ -59,8 +61,7 @@
                 h = BAZART.artObject.height(),
                 p = BAZART.canvas.pixelSize,
                 ctx = BAZART.ctx;
-
-            ctx.lineWidth = p;
+            
             drawBox(ctx, p);
             drawMan(ctx, p);
             drawWoman(ctx, p);
