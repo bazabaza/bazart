@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>timelamp</title>
+    <script src="https://yastatic.net/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://raw.githubusercontent.com/bazabaza/bazart/master/js/bazart-0.1.js"></script>
+    <script src="../js/bazart-0.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            var ratio = {x: 220, y: 169};
+            BAZART.init(ratio, false);
+
+            draw();
+        });
+
+
+        function drawWoman(ctx, p) {
+            ctx.save();
+            ctx.fillStyle = 'rgb(255,255,255)';
+            ctx.font = 8 * p + "px monospace";
+            var randX = 2 * p + Math.random() * 73 * p,
+                randY = 8 * p + Math.random() * 90 * p;
+
+            ctx.fillText("пизда", randX, randY);
+
+            ctx.restore();
+
+            setTimeout(eraseText, 50, ctx, p, randX, randY);
+            setTimeout(drawWoman, 2000 + Math.random() * 8000, ctx, p);
+        }
+
+
+        function makeClipMask(ctx, p) {
+            ctx.moveTo(2 * p, 10 * p);
+            ctx.lineWidth = p;
+            ctx.lineTo(130 * p, 1 * p);
+            ctx.lineTo(130 * p, 39 * p);
+            ctx.lineTo(2 * p, 30 * p);
+            ctx.lineTo(2 * p, 10 * p);
+            ctx.clip();
+        }
+
+        function drawTimestamp(ctx, p) {
+            var fontSizeRatio = 8 / 5,
+                heightScale = 3;
+
+            ctx.save();
+            makeClipMask(ctx, p);
+
+            ctx.font = (40 / heightScale) * fontSizeRatio * p + "px monospace";
+            ctx.scale(1, heightScale);
+            var timestamp = Date.now().toString();
+            timestamp = timestamp.substring(0, timestamp.length - 3);
+
+            ctx.fillText(timestamp, 2 * p, (40 / heightScale) * p);
+            ctx.restore();
+
+        }
+
+        function drawLamp(ctx, p) {
+            ctx.save();
+
+            // base
+            ctx.lineWidth = p;
+            ctx.beginPath();
+            ctx.moveTo(39 * p, 160 * p);
+            //ctx.lineTo(85 * p, 160 * p);
+            ctx.quadraticCurveTo(62 * p, 145 * p, 85 * p, 160 * p);
+            ctx.fill();
+
+            ctx.lineWidth = 3 * p;
+            ctx.beginPath();
+            // leg
+            ctx.moveTo(62 * p, 27 * p);
+            ctx.lineTo(62 * p, 154 * p);
+            // hand
+            ctx.moveTo(12 * p, 55 * p);
+            ctx.lineTo(138 * p, 15 * p);
+            ctx.stroke();
+
+            ctx.lineWidth = p;
+            ctx.beginPath();
+            ctx.arc(62 * p, 39 * p, 6 * p, 0, Math.PI * 2);
+            ctx.fill();
+
+            // lamp
+            ctx.lineWidth = p;
+            ctx.beginPath();
+            ctx.moveTo(114 * p, 55 * p);
+            //ctx.lineTo(85 * p, 160 * p);
+            ctx.quadraticCurveTo(117 * p, -5 * p, 161 * p, 39 * p);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(125 * p, 17 * p, 6 * p, 0, Math.PI * 2);
+            ctx.fill();
+
+
+
+            ctx.restore();
+        }
+
+        function draw() {
+            var w = BAZART.artObject.width(),
+                h = BAZART.artObject.height(),
+                p = BAZART.canvas.pixelSize,
+                ctx = BAZART.ctx;
+
+            //drawTimestamp(ctx, p);
+            drawLamp(ctx, p);
+
+            //ctx.setTransform(-1, 0, 0, 1, 100, 100);
+            //ctx.setTransform(1, 0, 0.3, 1, 0, 0);
+            //ctx.fillRect(20 * p, 20 * p, 20 * p, 20 * p);
+
+            //ctx.setTransform(1, 0.1, 0.1, 1, 0, 0);
+            //ctx.fillRect(60 * p, 60 * p, 20 * p, 20 * p);
+            //ctx.moveTo(50 * p, 50 * p);
+            //ctx.arc(50 * p, 50 * p, 30 * p, 0, Math.PI * 2);
+            //ctx.stroke();
+            //ctx.fill();
+            //ctx.clip();
+            //ctx.fillRect(0, 0, 100,100);
+
+        }
+    </script>
+    <style type="text/css">
+        body {
+            height: 100%;
+            margin: 0px;
+        }
+        canvas { border: 0px; }
+    </style>
+</head>
+
+<body>
+<canvas id="art-object"></canvas>
+</body>
+
+</html>
