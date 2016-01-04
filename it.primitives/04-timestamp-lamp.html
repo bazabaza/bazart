@@ -8,7 +8,7 @@
     <script src="../js/bazart-0.1.js"></script>
     <script>
         $(document).ready(function() {
-            var ratio = {x: 220, y: 169};
+            var ratio = {x: 260, y: 169};
             BAZART.init(ratio, false);
 
             draw();
@@ -31,29 +31,33 @@
         }
 
 
-        function makeClipMask(ctx, p) {
-            ctx.moveTo(2 * p, 10 * p);
+        function makeClipMask(ctx, p, textHeight) {
+            ctx.moveTo(2 * p, textHeight * 0.25 * p);
             ctx.lineWidth = p;
             ctx.lineTo(130 * p, 1 * p);
-            ctx.lineTo(130 * p, 39 * p);
-            ctx.lineTo(2 * p, 30 * p);
-            ctx.lineTo(2 * p, 10 * p);
+            ctx.lineTo(130 * p, (textHeight - 1) * p);
+            ctx.lineTo(2 * p, textHeight * 0.75 * p);
+            ctx.lineTo(2 * p, textHeight * 0.25 * p);
             ctx.clip();
         }
 
         function drawTimestamp(ctx, p) {
             var fontSizeRatio = 8 / 5,
-                heightScale = 3;
+                heightScale = 6,
+                textHeight = 100;
+
 
             ctx.save();
-            makeClipMask(ctx, p);
+            ctx.translate(184 * p, 30 * p);
+            ctx.rotate(Math.PI / 2.55);
+            makeClipMask(ctx, p, textHeight);
 
-            ctx.font = (40 / heightScale) * fontSizeRatio * p + "px monospace";
-            ctx.scale(1, heightScale);
+            ctx.font = (textHeight / heightScale) * fontSizeRatio * p + "px monospace";
+            ctx.scale(0.68, heightScale);
             var timestamp = Date.now().toString();
             timestamp = timestamp.substring(0, timestamp.length - 3);
 
-            ctx.fillText(timestamp, 2 * p, (40 / heightScale) * p);
+            ctx.fillText(timestamp, 2 * p, (textHeight / heightScale) * p);
             ctx.restore();
 
         }
@@ -96,8 +100,6 @@
             ctx.arc(125 * p, 17 * p, 6 * p, 0, Math.PI * 2);
             ctx.fill();
 
-
-
             ctx.restore();
         }
 
@@ -107,8 +109,8 @@
                 p = BAZART.canvas.pixelSize,
                 ctx = BAZART.ctx;
 
-            //drawTimestamp(ctx, p);
             drawLamp(ctx, p);
+            drawTimestamp(ctx, p);
 
             //ctx.setTransform(-1, 0, 0, 1, 100, 100);
             //ctx.setTransform(1, 0, 0.3, 1, 0, 0);
