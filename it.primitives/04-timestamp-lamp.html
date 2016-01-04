@@ -41,6 +41,17 @@
             ctx.clip();
         }
 
+        function cleanPlaceForTimestamp(ctx, p, textHeight) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(2 * p, 1 * p);
+            ctx.lineWidth = p;
+            ctx.fillStyle = 'rgb(255,255,255)';
+            ctx.fillRect(2 * p, 1 * p, 130 * p, textHeight * p);
+
+            ctx.restore();
+        }
+
         function drawTimestamp(ctx, p) {
             var fontSizeRatio = 8 / 5,
                 heightScale = 6,
@@ -50,6 +61,7 @@
             ctx.save();
             ctx.translate(184 * p, 30 * p);
             ctx.rotate(Math.PI / 2.55);
+            cleanPlaceForTimestamp(ctx, p, textHeight);
             makeClipMask(ctx, p, textHeight);
 
             ctx.font = (textHeight / heightScale) * fontSizeRatio * p + "px monospace";
@@ -59,6 +71,8 @@
 
             ctx.fillText(timestamp, 2 * p, (textHeight / heightScale) * p);
             ctx.restore();
+
+            setTimeout(drawTimestamp, 1000, ctx, p);
 
         }
 
