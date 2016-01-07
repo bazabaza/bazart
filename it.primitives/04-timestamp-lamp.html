@@ -14,23 +14,6 @@
             draw();
         });
 
-
-        function drawWoman(ctx, p) {
-            ctx.save();
-            ctx.fillStyle = 'rgb(255,255,255)';
-            ctx.font = 8 * p + "px monospace";
-            var randX = 2 * p + Math.random() * 73 * p,
-                randY = 8 * p + Math.random() * 90 * p;
-
-            ctx.fillText("пизда", randX, randY);
-
-            ctx.restore();
-
-            setTimeout(eraseText, 50, ctx, p, randX, randY);
-            setTimeout(drawWoman, 2000 + Math.random() * 8000, ctx, p);
-        }
-
-
         function makeClipMask(ctx, p, textHeight) {
             ctx.moveTo(2 * p, textHeight * 0.25 * p);
             ctx.lineWidth = p;
@@ -125,20 +108,6 @@
 
             drawLamp(ctx, p);
             drawTimestamp(ctx, p);
-
-            //ctx.setTransform(-1, 0, 0, 1, 100, 100);
-            //ctx.setTransform(1, 0, 0.3, 1, 0, 0);
-            //ctx.fillRect(20 * p, 20 * p, 20 * p, 20 * p);
-
-            //ctx.setTransform(1, 0.1, 0.1, 1, 0, 0);
-            //ctx.fillRect(60 * p, 60 * p, 20 * p, 20 * p);
-            //ctx.moveTo(50 * p, 50 * p);
-            //ctx.arc(50 * p, 50 * p, 30 * p, 0, Math.PI * 2);
-            //ctx.stroke();
-            //ctx.fill();
-            //ctx.clip();
-            //ctx.fillRect(0, 0, 100,100);
-
         }
     </script>
     <style type="text/css">
