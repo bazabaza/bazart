@@ -100,28 +100,33 @@
             ctx.restore();
         }
 
-        function drawCrappedTimestampBox(ctx, p, heightScale, up) {
+        function drawCrappedTimestampBox(ctx, p, proportion, up) {
             var fontSizeRatio = 6.6 / 5;
             var widthScale = 0.2235;
 
             ctx.save();
 
-            ctx.scale(widthScale, heightScale);
-            var realFontSize = BAZART.canvas.ratio.y * p;
+            if (up) {
+                ctx.scale(widthScale, 1);
+            } else {
+                ctx.scale(widthScale, proportion);
+            }
+
+            var realFontSize = BAZART.canvas.ratio.y  * p;
             ctx.font = (realFontSize * fontSizeRatio) + "px Monaco";
             var timestamp = Date.now().toString();
             timestamp = timestamp.substring(0, timestamp.length - 3);
 
             var yPosition;
             if (up) {
-                ctx.fillRect(0, 0, (BAZART.canvas.ratio.x / widthScale) * p, realFontSize);
+                ctx.fillRect(0, 0, (BAZART.canvas.ratio.x / widthScale) * p, (BAZART.canvas.ratio.y * proportion) * p);
                 ctx.save();
                 ctx.fillStyle = 'rgb(255,255,255)';
-                yPosition = realFontSize;
+                yPosition = (BAZART.canvas.ratio.y * proportion) * p;
                 ctx.fillText(timestamp, 0, yPosition);
                 ctx.restore();
             } else {
-                yPosition = (BAZART.canvas.ratio.y / heightScale) * p;
+                yPosition = (BAZART.canvas.ratio.y / proportion) * p;
                 ctx.fillText(timestamp, 0, yPosition);
             }
             ctx.restore();
