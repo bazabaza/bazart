@@ -9,7 +9,7 @@
     <script>
         $(document).ready(function() {
             var ratio = {x: 160, y: 90};
-            BAZART.init(ratio, true);
+            BAZART.init(ratio, false);
 
             draw();
         });
@@ -100,19 +100,30 @@
             ctx.restore();
         }
 
-        function drawCrappedTimestampBox(ctx, p) {
-            var fontSizeRatio = 6.58 / 5,
-                heightScale = 1,
-                textHeight = 90;
+        function drawCrappedTimestampBox(ctx, p, heightScale, up) {
+            var fontSizeRatio = 6.6 / 5;
+            var widthScale = 0.2235;
 
             ctx.save();
 
-            ctx.scale(0.2235, 1);
-            ctx.font = (textHeight / heightScale) * fontSizeRatio * p + "px Courier";
+            ctx.scale(widthScale, heightScale);
+            var realFontSize = BAZART.canvas.ratio.y * p;
+            ctx.font = (realFontSize * fontSizeRatio) + "px Monaco";
             var timestamp = Date.now().toString();
             timestamp = timestamp.substring(0, timestamp.length - 3);
 
-            ctx.fillText(timestamp, 0, (textHeight / heightScale) * p);
+            var yPosition;
+            if (up) {
+                ctx.fillRect(0, 0, (BAZART.canvas.ratio.x / widthScale) * p, realFontSize);
+                ctx.save();
+                ctx.fillStyle = 'rgb(255,255,255)';
+                yPosition = realFontSize;
+                ctx.fillText(timestamp, 0, yPosition);
+                ctx.restore();
+            } else {
+                yPosition = (BAZART.canvas.ratio.y / heightScale) * p;
+                ctx.fillText(timestamp, 0, yPosition);
+            }
             ctx.restore();
 
         }
@@ -125,7 +136,8 @@
 
             //drawLamp(ctx, p);
             //drawTimestamp(ctx, p);
-            drawCrappedTimestampBox(ctx, p);
+            drawCrappedTimestampBox(ctx, p, 0.75, false);
+            drawCrappedTimestampBox(ctx, p, 0.25, true);
         }
     </script>
     <style type="text/css">
