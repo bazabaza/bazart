@@ -57,12 +57,26 @@
             var startTimestamp = Date.now();
             var cycleTime = 5000;
 
+            function _calcProportion(reminderTime) {
+                var stumblingBlockTime = 3500;
+                var leftScale = Math.pow(stumblingBlockTime, 4);
+                var rightScale = Math.pow((cycleTime - stumblingBlockTime), 2);
+
+                if (reminderTime <= stumblingBlockTime) {
+                    return 0.75 * (Math.pow(reminderTime, 4) / leftScale);
+                } else {
+                    return 0.75 + 0.25 * (Math.pow(reminderTime - stumblingBlockTime, 2) / rightScale);
+                }
+
+            }
+
             function _redraw() {
                 var currTimestamp = Date.now();
                 var diffTime = currTimestamp - startTimestamp;
                 var remainderTime = diffTime % cycleTime;
                 var blackOrder = Math.floor(diffTime / cycleTime) % 2 == 0;
-                var proportion = remainderTime / cycleTime;
+                //var proportion = remainderTime / cycleTime;
+                var proportion = _calcProportion(remainderTime);
 
                 ctx.save();
                 ctx.fillStyle = 'rgb(255,255,255)';
