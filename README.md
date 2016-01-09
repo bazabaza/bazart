@@ -1,4 +1,6 @@
 # it.primitives
+Как из рисования можно сделать структурную часть железной бездны - так инвертированно и код можно наносить как краску на картинку
+
 https://htmlpreview.github.io/?https://github.com/bazabaza/bazart/blob/master/it.primitives/01-shell.html
 https://htmlpreview.github.io/?https://github.com/bazabaza/bazart/blob/master/it.primitives/02-comment.html
 https://htmlpreview.github.io/?https://github.com/bazabaza/bazart/blob/master/it.primitives/03-blackbox.html
