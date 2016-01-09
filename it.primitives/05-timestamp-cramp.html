@@ -39,27 +39,15 @@
                 yPosition = (BAZART.canvas.ratio.y / proportion) * p;
                 if (upWhite) {
                     ctx.fillRect(
-                        0, (BAZART.canvas.ratio.y / proportion - realFontSize / p) * p,
+                        0, (BAZART.canvas.ratio.y / proportion - BAZART.canvas.ratio.y) * p,
                         (BAZART.canvas.ratio.x / widthScale) * p,
-                        (yPosition - (BAZART.canvas.ratio.y / proportion - realFontSize / p)) * p);
+                        (yPosition - (BAZART.canvas.ratio.y / proportion - BAZART.canvas.ratio.y)) * p);
                     ctx.fillStyle = 'rgb(255,255,255)';
                 }
             }
 
             ctx.fillText(timestamp, 0, yPosition);
 
-
-//            if (up) {
-//                ctx.fillRect(0, 0, (BAZART.canvas.ratio.x / widthScale) * p, (BAZART.canvas.ratio.y * proportion) * p);
-//                ctx.save();
-//                ctx.fillStyle = 'rgb(255,255,255)';
-//
-//                ctx.fillText(timestamp, 0, yPosition);
-//                ctx.restore();
-//            } else {
-//
-//                ctx.fillText(timestamp, 0, yPosition);
-//            }
             ctx.restore();
 
         }
