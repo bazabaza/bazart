@@ -7,6 +7,8 @@
     <script src="https://raw.githubusercontent.com/bazabaza/bazart/master/js/bazart-0.1.js"></script>
     <script src="../js/bazart-0.1.js"></script>
     <script>
+        var counter = 0;
+
         $(document).ready(function() {
             var ratio = {x: 160, y: 100};
             BAZART.init(ratio, false);
@@ -43,7 +45,6 @@
             }
 
             var prevCallTime = 0;
-            var counter = 0;
 
             function drawCursor() {
                 var currTime = Date.now();
