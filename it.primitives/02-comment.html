@@ -40,10 +40,11 @@
             }
 
             function hideCursor() {
-                ctx.save();
+                //ctx.save();
                 ctx.fillStyle = 'rgb(255,255,255)';
                 ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
-                ctx.restore();
+                ctx.fillStyle = 'rgb(0,0,0)';
+                //ctx.restore();
 
                 //setTimeout(drawCursor, 300);
             }
