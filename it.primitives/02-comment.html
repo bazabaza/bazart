@@ -36,7 +36,7 @@
                 ctx.lineTo(p * 25.5, p * (19 + 13));
                 ctx.stroke();
 
-                setTimeout(hideCursor, 200);
+                //setTimeout(hideCursor, 300);
             }
 
             function hideCursor() {
@@ -45,10 +45,20 @@
                 ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
                 ctx.restore();
 
-                setTimeout(drawCursor, 200);
+                //setTimeout(drawCursor, 300);
             }
 
-            drawCursor();
+            var cursorVisible = false;
+            function _refresh() {
+                if (cursorVisible) {
+                    hideCursor();
+                } else {
+                    drawCursor();
+                }
+                cursorVisible = !cursorVisible;
+            }
+
+            setInterval(_refresh, 300)
         }
     </script>
     <style type="text/css">
