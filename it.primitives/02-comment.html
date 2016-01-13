@@ -57,9 +57,11 @@
                     drawCursor();
                 }
                 cursorVisible = !cursorVisible;
+
+                setTimeout(refresher, 100);
             };
 
-            setInterval(refresher, 100)
+            refresher();
         }
     </script>
     <style type="text/css">
