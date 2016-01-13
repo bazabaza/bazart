@@ -8,10 +8,13 @@
     <script src="../js/bazart-0.1.js"></script>
     <script>
         var counter = 0;
+        var doc_ready_counter = 0;
 
         $(document).ready(function() {
             var ratio = {x: 160, y: 100};
             BAZART.init(ratio, false);
+
+            doc_ready_counter++;
 
             draw();
         });
@@ -48,7 +51,8 @@
 
             function drawCursor() {
                 var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter);
+                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter +
+                    ' / ' + doc_ready_counter);
                 counter++;
                 prevCallTime = currTime;
 
@@ -64,7 +68,8 @@
 
             function hideCursor() {
                 var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter);
+                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter +
+                    ' / ' + doc_ready_counter);
                 counter++;
                 prevCallTime = currTime;
 
