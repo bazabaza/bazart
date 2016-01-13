@@ -19,34 +19,6 @@
             ctx.strokeRect(p * 10.5, p * 10.5, w - p * 10.5 * 2, h - p * 10.5 * 2);
         }
 
-
-        function drawCursor() {
-            var ctx = BAZART.ctx,
-                p = BAZART.canvas.pixelSize;
-
-            ctx.moveTo(p * 20.5, p * 19);
-            ctx.lineTo(p * 20.5, p * (19 + 18));
-
-            ctx.moveTo(p * 20.5, p * (19 + 13));
-            ctx.lineTo(p * 25.5, p * (19 + 13));
-            ctx.stroke();
-
-            setTimeout(hideCursor, 1000);
-        }
-
-
-        function hideCursor() {
-            var ctx = BAZART.ctx,
-                p = BAZART.canvas.pixelSize;
-
-            ctx.save();
-            ctx.fillStyle = 'rgb(255,255,255)';
-            ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
-            ctx.restore();
-
-            setTimeout(drawCursor, 1000);
-        }
-
         function draw() {
             var w = BAZART.artObject.width(),
                 h = BAZART.artObject.height(),
@@ -55,6 +27,27 @@
 
             ctx.lineWidth = p;
             drawTextFieldBorder(ctx, p, w, h);
+
+            function drawCursor() {
+                ctx.moveTo(p * 20.5, p * 19);
+                ctx.lineTo(p * 20.5, p * (19 + 18));
+
+                ctx.moveTo(p * 20.5, p * (19 + 13));
+                ctx.lineTo(p * 25.5, p * (19 + 13));
+                ctx.stroke();
+
+                setTimeout(hideCursor, 200);
+            }
+
+            function hideCursor() {
+                ctx.save();
+                ctx.fillStyle = 'rgb(255,255,255)';
+                ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
+                ctx.restore();
+
+                setTimeout(drawCursor, 200);
+            }
+
             drawCursor();
         }
     </script>
