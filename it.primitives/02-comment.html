@@ -28,7 +28,8 @@
             ctx.lineTo(p * 25.5, p * (19 + 13));
             ctx.stroke();
 
-            setTimeout(hideCursor, 500, ctx, p);
+            setTimeout(hideCursor, 530, ctx, p);
+            setTimeout(drawCursor, 1060, ctx, p);
         }
 
 
@@ -37,8 +38,6 @@
             ctx.fillStyle = 'rgb(255,255,255)';
             ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
             ctx.restore();
-
-            setTimeout(drawCursor, 1000, ctx, p);
         }
 
         function draw() {
