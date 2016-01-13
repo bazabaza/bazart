@@ -11,6 +11,10 @@
         var doc_ready_counter = 0;
 
         $(document).ready(function() {
+            if (BAZART.artObject) {
+                return;
+            }
+
             var ratio = {x: 160, y: 100};
             BAZART.init(ratio, false);
 
