@@ -43,10 +43,12 @@
             }
 
             var prevCallTime = 0;
+            var counter = 0;
 
             function drawCursor() {
                 var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString());
+                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter);
+                counter++;
                 prevCallTime = currTime;
 
                 ctx.moveTo(p * 20.5, p * 19);
@@ -61,7 +63,8 @@
 
             function hideCursor() {
                 var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString());
+                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter);
+                counter++;
                 prevCallTime = currTime;
 
                 //ctx.save();
