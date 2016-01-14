@@ -8,6 +8,10 @@
     <script src="../js/bazart-0.1.js"></script>
     <script>
         $(document).ready(function() {
+            if (BAZART.artObject) {
+                return;
+            }
+
             var ratio = {x: 100, y: 100};
             BAZART.init(ratio, false);
 
