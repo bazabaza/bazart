@@ -18,8 +18,6 @@
             var ratio = {x: 160, y: 100};
             BAZART.init(ratio, false);
 
-            doc_ready_counter++;
-
             draw();
         });
 
@@ -37,29 +35,7 @@
             ctx.lineWidth = p;
             drawTextFieldBorder(ctx, p, w, h);
 
-            ctx.font = 8 * p + "px monospace";
-
-            function printDebug(text) {
-                var p = BAZART.canvas.pixelSize,
-                    ctx = BAZART.ctx;
-
-                ctx.fillStyle = 'rgb(255,255,255)';
-                ctx.fillRect(0, 60 * p, 150 * p, 40 * p);
-                ctx.fillStyle = 'rgb(0,0,0)';
-
-                BAZART.ctx.fillText(text, 0, 99 * p);
-
-            }
-
-            var prevCallTime = 0;
-
             function drawCursor() {
-                var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter +
-                    ' / ' + doc_ready_counter);
-                counter++;
-                prevCallTime = currTime;
-
                 ctx.beginPath();
                 ctx.moveTo(p * 20.5, p * 19);
                 ctx.lineTo(p * 20.5, p * (19 + 18));
@@ -67,24 +43,13 @@
                 ctx.moveTo(p * 20.5, p * (19 + 13));
                 ctx.lineTo(p * 25.5, p * (19 + 13));
                 ctx.stroke();
-
-                //setTimeout(hideCursor, 300);
             }
 
             function hideCursor() {
-                var currTime = Date.now();
-                printDebug(currTime.toString() + ' / ' + (currTime - prevCallTime).toString() + ' / ' + counter +
-                    ' / ' + doc_ready_counter);
-                counter++;
-                prevCallTime = currTime;
-
-                //ctx.save();
+                ctx.save();
                 ctx.fillStyle = 'rgb(255,255,255)';
                 ctx.fillRect(p * 18, p * 17, p * 10, p * 22);
-                ctx.fillStyle = 'rgb(0,0,0)';
-                //ctx.restore();
-
-                //setTimeout(drawCursor, 300);
+                ctx.restore();
             }
 
             var cursorVisible = false;
