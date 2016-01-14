@@ -59,6 +59,21 @@ BAZART = (function($) {
         }
     };
 
+    m.printDebugData = function(text) {
+        var p = this.canvas.pixelSize,
+            ctx = this.ctx;
+
+        this.ctx.save();
+        this.ctx.fillStyle = 'rgb(255,255,255)';
+        this.ctx.fillRect(0, (this.canvas.ratio.y - 20) * p, this.canvas.ratio.x * p, 20 * p);
+        this.ctx.restore()
+
+        this.ctx.save();
+        ctx.font = 25 + "px monospace";
+        this.ctx.fillText(text, 0, (this.canvas.ratio.y - 1) * p);
+        this.ctx.restore();
+    };
+
     m.init = function(canvasRatio, debug) {
         this.canvas.ratio = canvasRatio;
 
