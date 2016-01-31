@@ -44,7 +44,7 @@
             var timestamp3 = (Date.now() + 2000).toString();
             timestamp3 = timestamp3.substring(0, timestamp3.length - 3);
 
-            ctx.font = "40px Monaco";
+            ctx.font = 4 * p + "px Monaco";
             ctx.fillText(timestamp1, 37.5 * p, 29 * p);
             ctx.fillText(timestamp2, 10 * p, 38 * p);
             ctx.fillText(timestamp3, 65 * p, 45 * p);
